@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Isolucion.PortalLicenciamiento.Api/bin
+/Isolucion.PortalLicenciamiento.Api/obj
+*.user
+/Isolucion.ServicioActualizacion/bin
+/Isolucion.ServicioActualizacion/obj
+/Isolucion.ServicioActualizacion/publish

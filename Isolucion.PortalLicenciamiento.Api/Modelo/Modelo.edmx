@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Isolucion.PortalLicenciamiento.Api.Modelo.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ActualizacionLog">
+          <Key>
+            <PropertyRef Name="Id_ActualizacionLog" />
+          </Key>
+          <Property Name="Id_ActualizacionLog" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Mensaje" Type="nvarchar(max)" />
+          <Property Name="Stack_Tarace" Type="nvarchar(max)" />
+          <Property Name="Fechas" Type="datetime" Nullable="false" />
+          <Property Name="CodCliente" Type="int" />
+          <Property Name="Estado" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Id_Cliente" />
+          </Key>
+          <Property Name="Id_Cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NomCliente" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="Documento" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Licencia" Type="varchar(max)" Nullable="false" />
+          <Property Name="InicioVigencia" Type="datetime" Nullable="false" />
+          <Property Name="FinVigencia" Type="datetime" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="ActualizacionStatusMensaje" Type="varchar" MaxLength="4000" />
+        </EntityType>
+        <EntityType Name="Componente">
+          <Key>
+            <PropertyRef Name="Id_Componente" />
+          </Key>
+          <Property Name="Id_Componente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NomComponente" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TipoComponente" Type="int" Nullable="false" />
+          <Property Name="RutasRelativas" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="Excepciones" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="NombresSistema" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="NombresAuxiliares" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="NombresPool" Type="varchar" MaxLength="255" />
+          <Property Name="NombreArchivoZip" Type="varchar" MaxLength="255" />
+          <Property Name="Id_WebSite" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InformacionCliente">
+          <Key>
+            <PropertyRef Name="Id_InformacionCliente" />
+          </Key>
+          <Property Name="Id_InformacionCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodCliente" Type="int" />
+          <Property Name="InformacionClienteDetalle" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Version">
+          <Key>
+            <PropertyRef Name="Id_Version" />
+          </Key>
+          <Property Name="Id_Version" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NomVersion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
+          <Property Name="RutaDescarga" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Id_WebSite" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="IsolucionPortalLicenciamientoApiModeloStoreContainer">
+          <EntitySet Name="ActualizacionLog" EntityType="Self.ActualizacionLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Componente" EntityType="Self.Componente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InformacionCliente" EntityType="Self.InformacionCliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Version" EntityType="Self.Version" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Isolucion.PortalLicenciamiento.Api.Modelo" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Version">
+          <Key>
+            <PropertyRef Name="Id_Version" />
+          </Key>
+          <Property Name="Id_Version" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NomVersion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="RutaDescarga" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id_WebSite" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="RepositorioDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Version" EntityType="Self.Version" />
+          <EntitySet Name="Componente" EntityType="Isolucion.PortalLicenciamiento.Api.Modelo.Componente" />
+          <EntitySet Name="ActualizacionLog" EntityType="Isolucion.PortalLicenciamiento.Api.Modelo.ActualizacionLog" />
+          <EntitySet Name="InformacionCliente" EntityType="Isolucion.PortalLicenciamiento.Api.Modelo.InformacionCliente" />
+          <EntitySet Name="Cliente" EntityType="Isolucion.PortalLicenciamiento.Api.Modelo.Cliente" />
+        </EntityContainer>
+        <EntityType Name="Componente">
+          <Key>
+            <PropertyRef Name="Id_Componente" />
+          </Key>
+          <Property Name="Id_Componente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NomComponente" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TipoComponente" Type="Int32" Nullable="false" />
+          <Property Name="RutasRelativas" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="Excepciones" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="NombresSistema" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="NombresAuxiliares" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="NombresPool" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="NombreArchivoZip" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Id_WebSite" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ActualizacionLog">
+          <Key>
+            <PropertyRef Name="Id_ActualizacionLog" />
+          </Key>
+          <Property Name="Id_ActualizacionLog" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mensaje" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Stack_Tarace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Fechas" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CodCliente" Type="Int32" />
+          <Property Name="Estado" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="InformacionCliente">
+          <Key>
+            <PropertyRef Name="Id_InformacionCliente" />
+          </Key>
+          <Property Name="Id_InformacionCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodCliente" Type="Int32" />
+          <Property Name="InformacionClienteDetalle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Id_Cliente" />
+          </Key>
+          <Property Name="Id_Cliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NomCliente" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="false" />
+          <Property Name="Documento" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Licencia" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="InicioVigencia" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FinVigencia" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
+          <Property Name="ActualizacionStatusMensaje" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IsolucionPortalLicenciamientoApiModeloStoreContainer" CdmEntityContainer="RepositorioDbContext">
+          <EntitySetMapping Name="Version">
+            <EntityTypeMapping TypeName="Isolucion.PortalLicenciamiento.Api.Modelo.Version">
+              <MappingFragment StoreEntitySet="Version">
+                <ScalarProperty Name="Id_Version" ColumnName="Id_Version" />
+                <ScalarProperty Name="NomVersion" ColumnName="NomVersion" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="RutaDescarga" ColumnName="RutaDescarga" />
+                <ScalarProperty Name="Id_WebSite" ColumnName="Id_WebSite" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Componente">
+            <EntityTypeMapping TypeName="Isolucion.PortalLicenciamiento.Api.Modelo.Componente">
+              <MappingFragment StoreEntitySet="Componente">
+                <ScalarProperty Name="Id_WebSite" ColumnName="Id_WebSite" />
+                <ScalarProperty Name="NombreArchivoZip" ColumnName="NombreArchivoZip" />
+                <ScalarProperty Name="NombresPool" ColumnName="NombresPool" />
+                <ScalarProperty Name="NombresAuxiliares" ColumnName="NombresAuxiliares" />
+                <ScalarProperty Name="NombresSistema" ColumnName="NombresSistema" />
+                <ScalarProperty Name="Excepciones" ColumnName="Excepciones" />
+                <ScalarProperty Name="RutasRelativas" ColumnName="RutasRelativas" />
+                <ScalarProperty Name="TipoComponente" ColumnName="TipoComponente" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="NomComponente" ColumnName="NomComponente" />
+                <ScalarProperty Name="Id_Componente" ColumnName="Id_Componente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActualizacionLog">
+            <EntityTypeMapping TypeName="Isolucion.PortalLicenciamiento.Api.Modelo.ActualizacionLog">
+              <MappingFragment StoreEntitySet="ActualizacionLog">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="CodCliente" ColumnName="CodCliente" />
+                <ScalarProperty Name="Fechas" ColumnName="Fechas" />
+                <ScalarProperty Name="Stack_Tarace" ColumnName="Stack_Tarace" />
+                <ScalarProperty Name="Mensaje" ColumnName="Mensaje" />
+                <ScalarProperty Name="Id_ActualizacionLog" ColumnName="Id_ActualizacionLog" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InformacionCliente">
+            <EntityTypeMapping TypeName="Isolucion.PortalLicenciamiento.Api.Modelo.InformacionCliente">
+              <MappingFragment StoreEntitySet="InformacionCliente">
+                <ScalarProperty Name="InformacionClienteDetalle" ColumnName="InformacionClienteDetalle" />
+                <ScalarProperty Name="CodCliente" ColumnName="CodCliente" />
+                <ScalarProperty Name="Id_InformacionCliente" ColumnName="Id_InformacionCliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="Isolucion.PortalLicenciamiento.Api.Modelo.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="ActualizacionStatusMensaje" ColumnName="ActualizacionStatusMensaje" />
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="FinVigencia" ColumnName="FinVigencia" />
+                <ScalarProperty Name="InicioVigencia" ColumnName="InicioVigencia" />
+                <ScalarProperty Name="Licencia" ColumnName="Licencia" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="NomCliente" ColumnName="NomCliente" />
+                <ScalarProperty Name="Id_Cliente" ColumnName="Id_Cliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
