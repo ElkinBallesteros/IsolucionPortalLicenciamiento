@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net.Http;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 //using File = Microsoft.SharePoint.Client.File;
@@ -67,9 +68,6 @@ namespace Isolucion.ServicioActualizacion.Negocio
             //Determina si el cliente requiere actualizacion de la (s) aplicacion(es)
             if (webSite.RequiereActualizacion)
             {
-               //Se adiciona esta bandera para controlar el proceso de actualizacion
-               ConstantesGlobales.EnEjecucion = true;
-
                var componentes = ObtenerConfiguracion();
 
                Logger.Info($"Se encontraron  {componentes.Count} Aplicaciones para Actualizacion");
@@ -125,6 +123,10 @@ namespace Isolucion.ServicioActualizacion.Negocio
                   var response = await client.PostAsync(new Uri($"{ConstantesGlobales.PortalLicenciamientoApiUrl}LogProceso"), content);
                }
             }
+            else
+            {
+               ConstantesGlobales.EnEjecucion = false;
+            }
          }
          catch (Exception e)
          {
@@ -176,9 +178,9 @@ namespace Isolucion.ServicioActualizacion.Negocio
                   resumenProceso.AppendLine($"{DateTime.Now:yy-MM-dd hh:MM:ss} ApplicationPool {string.Join(",", componente.NombresPool.Split(','))} detenidos");
                   break;
                case TipoAplicacion.Win:
+                  StopWinApp(componente.NombreServicio);
                   Logger.Info($"Servicio {componente.NomComponente} detenido");
                   resumenProceso.AppendLine($"{DateTime.Now:yy-MM-dd hh:MM:ss} Servicio {componente.NomComponente} detenido");
-                  StopWinApp(componente.NomComponente);
                   break;
             }
          }
@@ -197,7 +199,7 @@ namespace Isolucion.ServicioActualizacion.Negocio
                   resumenProceso.AppendLine($"{DateTime.Now:yy-MM-dd hh:MM:ss} ApplicationPool {string.Join(",", componente.NombresPool.Split(','))} Iniciados");
                   break;
                case TipoAplicacion.Win:
-                  StartWinApp(componente.NomComponente);
+                  StartWinApp(componente.NombreServicio);
                   Logger.Info($"Servicio {componente.NomComponente} iniciado");
                   resumenProceso.AppendLine($"{DateTime.Now:yy-MM-dd hh:MM:ss} Servicio {componente.NomComponente} iniciado");
                   break;
@@ -567,10 +569,16 @@ namespace Isolucion.ServicioActualizacion.Negocio
          var services = ServiceController.GetServices();
 
          var service = services.Where(s => s.ServiceName == winAppNombre)?.FirstOrDefault();
-         if (service?.Status == ServiceControllerStatus.Stopped ||
-             service?.Status == ServiceControllerStatus.StopPending)
+         if (service?.Status == ServiceControllerStatus.Running ||
+             service?.Status == ServiceControllerStatus.Paused)
          {
             service.Stop();
+         }
+         Thread.Sleep(1000);
+         if (service?.Status != ServiceControllerStatus.Stopped)
+         {
+            Logger.Info("Servicion aun corriendo");
+            StopWinApp(winAppNombre);
          }
       }
 
@@ -619,12 +627,12 @@ namespace Isolucion.ServicioActualizacion.Negocio
             resumenProceso.AppendLine($"{DateTime.Now:yy-MM-dd hh:MM:ss} Descomprimiendo archivos aplicaciones");
 
             ZipFile.ExtractToDirectory(archivoVersion.FirstOrDefault(), RutasConfiguracion.PathDescargaLocal);
-            File.Delete(archivoVersion.FirstOrDefault());
+            //File.Delete(archivoVersion.FirstOrDefault());
          }
 
          var zipFiles = Directory.GetFiles(RutasConfiguracion.PathDescargaLocal);
 
-         foreach (var file in zipFiles)
+         foreach (var file in zipFiles.Where(z => !z.Contains("Version")))
          {
             Logger.Info($"Descomprimiendo {file}");
             resumenProceso.AppendLine($"{DateTime.Now:yy-MM-dd hh:MM:ss} escomprimiendo {file}");

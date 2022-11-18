@@ -82,7 +82,8 @@ namespace Isolucion.ServicioActualizacion
          using (var scope = _container.BeginLifetimeScope())
          {
             var actualizacionNegocio = scope.Resolve<IServicioActualizacionNegocio>();
-
+            //Se adiciona esta bandera para controlar el proceso de actualizacion
+            ConstantesGlobales.EnEjecucion = true;
             actualizacionNegocio.ActualizarAplicacion();
          }
       }
